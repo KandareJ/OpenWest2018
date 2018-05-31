@@ -2,7 +2,7 @@ ruleset export {
   meta{
   }
   
-  gloabl{
+  global{
   }
   
   rule export_json{
