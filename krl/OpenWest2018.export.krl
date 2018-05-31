@@ -39,14 +39,13 @@ ruleset OpenWest2018.export {
   }
   
   rule export_csv_info {
-    select when export csv
+    select when export csv_info
     
     pre {
       name = Attendee:name();
       tag_line = Attendee:tag_line();
       intro_channel_id = Attendee:intro_channel_id();
       pin = Attendee:pin();
-      connections = Attendee:connections();
       csv = <<#{name},"#{tag_line}",#{intro_channel_id},#{pin}#{13.chr() + 10.chr()}>>;
     }
     
@@ -54,7 +53,13 @@ ruleset OpenWest2018.export {
   }
   
   rule export_csv_connections {
-    select when export csv
+    select when export csv_connections
+    
+    pre{
+      csv = Attendee:connections().reduce(function(a,b){a + <<#{13.chr() + 10.chr()}>> + b})
+    }
+    
+    send_directive("_txt", {"content" : csv})
   }
 
 }
