@@ -1,11 +1,18 @@
 ruleset OpenWest2018.contact_info {
   meta {
     use module io.picolabs.pds alias store
-    shares __testing
+    use module io.picolabs.subscription alias Subs
+    shares __testing, testFunc
   }
   
   global {
-    __testing = {"events" : [{"domain" : "contact", "type" : "get_info"}]}
+    __testing = {"events" : [{"domain" : "contact", "type" : "getter"}],
+                 "queries" : [{"name" : "testFunc"}]}
+    
+    
+    testFunc = function() {
+      Subs:established("Tx_role", "peer").map(function(x){x{"Tx"}});
+    }
   }
   
   rule get_info {
