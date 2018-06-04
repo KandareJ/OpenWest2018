@@ -1,6 +1,7 @@
 ruleset OpenWest2018.contact_info {
   meta {
     use module io.picolabs.pds alias store
+    use module OpenWest2018.attendee alias Attendee
     shares __testing
   }
   
@@ -17,9 +18,9 @@ ruleset OpenWest2018.contact_info {
         <body>
           <h1>Contact Information</h1>
           <form action="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter">
-            First Name:<input type="text" name="first name">
+            First Name:<input type="text" name="first name" required>
             <br><br>
-            Last Name:<input type="text" name="last name">
+            Last Name:<input type="text" name="last name" required>
             <br><br>
             *Home phone:<input type="text" name="home">
             <br><br>
@@ -36,8 +37,9 @@ ruleset OpenWest2018.contact_info {
     }
     
     li = function(info) {
-      map = info.map(function(v, k) {<<<li>#{k}: #{v}</li> >>});
-      map.values().join("");
+      noName = info.filter(function(v, k){not k.match(re#name#)});
+      map = noName.map(function(v, k) {<<<li>#{k}: #{v}</li> >>});
+      (map.values()[0].isnull()) => "No contact information available" | map.values().join("");
     }
     
     getterUI = function(map) {
@@ -46,8 +48,10 @@ ruleset OpenWest2018.contact_info {
             <title>Contact Information</title>
           </head>
           <body>
-            <h1>Contact Info</h1><br>
+            
+            <h2>#{map{"first name"}} #{map{"last name"}}</h2>
             #{li(map)}
+            <br><a href="http://picos.byu.edu:8080/OpenWest2018.collection/about_pin.html?pin=#{Attendee:pin}">back</a>
           </body>
         </html>
         >>
@@ -81,4 +85,3 @@ ruleset OpenWest2018.contact_info {
   }
 
 }
- 
