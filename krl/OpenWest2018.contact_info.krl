@@ -26,8 +26,8 @@ ruleset OpenWest2018.contact_info {
   rule set_info {
     select when contact setter
     
-    foreach event:attr("info") setting (v, k)
-    
+    foreach event:attrs setting (v, k)
+    if not v.length() < 1 && k != "_headers" then noop();
       fired {
         raise store event "new_value" 
         attributes {"key" : k, "value" : v};
