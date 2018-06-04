@@ -6,12 +6,14 @@ ruleset OpenWest2018.export {
   
   global {
     
+    designations = function(x){x{"designation"}}
+    
     testFunc = function() {
       name = Attendee:name();
       tag_line = Attendee:tag_line();
       intro_channel_id = Attendee:intro_channel_id();
       pin = Attendee:pin();
-      connections = Attendee:connections();
+      connections = Attendee:connections().map(designations);
       csv = <<#{name},"#{tag_line}",#{intro_channel_id},#{pin}#{13.chr() + 10.chr()}>>;
       csv
     }
@@ -21,7 +23,7 @@ ruleset OpenWest2018.export {
                 }
   }
   
-  rule export_json{
+  rule export_json {
     select when export json
     
     pre {
@@ -29,7 +31,7 @@ ruleset OpenWest2018.export {
       tag_line = Attendee:tag_line();
       intro_channel_id = Attendee:intro_channel_id();
       pin = Attendee:pin();
-      connections = Attendee:connections();
+      connections = Attendee:connections().map(designations);
       json = {}.put("name", name).put("tag_line", tag_line).put("pin", pin)
         .put("intro_channel_id", intro_channel_id).put("connections", connections)
     }
@@ -56,7 +58,7 @@ ruleset OpenWest2018.export {
     select when export csv_connections
     
     pre{
-      csv = Attendee:connections().reduce(function(a,b){a + <<#{13.chr() + 10.chr()}>> + b})
+      csv = Attendee:connections().map(designations).reduce(function(a,b){a + <<#{13.chr() + 10.chr()}>> + b})
     }
     
     send_directive("_txt", {"content" : csv})
