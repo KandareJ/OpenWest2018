@@ -4,19 +4,17 @@ body {
 
 p {
   color: black;
-  font-family: rift;
   font-weight: 200;
   font-size: 1.5em;
-  letter-spacing: 0em;
+  font-family: sans-serif;
   padding: 10;
 }
 
 li {
   color: black;
-  font-family: rift;
   font-weight: 200;
   font-size: 1.3em;
-  letter-spacing: 0em;
+  font-family: sans-serif;
   padding: 10;
 }
 
@@ -27,31 +25,29 @@ h1 {
   font-weight: 200;
   font-size: 2.5em;
   letter-spacing: 0em;
+  margin: 0;
 }
 
 h2 {
   color: white;
-  font-family: rift;
   font-weight: 200;
   font-size: 2em;
-  letter-spacing: 0em;
+  font-family: sans-serif;
 }
 
 h3 {
   color: black;
-  font-family: rift;
   font-weight: 500;
   font-size: 1.6em;
-  letter-spacing: 0em;
   padding-left: 10;
+  font-family: sans-serif;
 }
 
 h4 {
-  color: white;
+  color: black;
   font-family: chantal,sans-serif;
   font-weight: 400;
   font-size: 1.3em;
-  letter-spacing: 0em;
 }
 
 hr {
@@ -59,6 +55,38 @@ hr {
     border-top: 1px solid #eee;
     margin: 20px 0
 }
+
+form {
+  color: black;
+  font-family: sans-serif;
+  font-weight: 200;
+  font-size: 2em;
+  letter-spacing: 0em;
+  padding: 10;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: .7em;
+}
+
+input[type=submit] {
+  width: 100%;
+ background-color: #2196f3;
+ color: white;
+ padding: 14px 20px;
+ margin: 8px 0;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+}
+
 
 .button {
     border: none;
