@@ -25,7 +25,8 @@ ruleset OpenWest2018.attendee.ui {
 <html>
   <head>
     <title>#{title}</title>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://picos.byu.edu:8080/css/picomobile.css">
 #{scripts.defaultsTo("")}
   </head>
   <body>
@@ -163,16 +164,32 @@ $(function(){
       <div class="center" style="width:100%">
         <div class="center" style="cursor:pointer;" id="cs"></div>
     </div>
+      <hr>
+      <div class="row">
+        <h3>#{progress}</h3>
+        <p>#{me:tag_line()}</p>
+        <p>Your pin is #{me:pin()}</p>
+        <hr>
+        <p>
+          Connections (#{connections.length()}#{possible}):
+          <ul>
+          #{li(connections)}</ul>
+        </p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
 
-    <h2>#{me:tag_line()}</h2>
-<div style="border:1px dashed silver;padding:5px;float:left;cursor:pointer"></div>
-<br clear="all">
-<p>pin: #{me:pin()} #{progress}</p>
-<p>
-Connections (#{connections.length()}#{possible}):
-<ul>
-#{li(connections)}</ul>
-</p>
+      <footer class="container bottom blue">
+        <h4>Contact. Connect. Collect!</h4>
+      </footer>
+
 #{footer()}>>
     }
     my_page_link = function(pin) {
