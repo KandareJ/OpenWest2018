@@ -2,7 +2,6 @@ ruleset OpenWest2018.attendee.ui {
   meta {
     use module io.picolabs.wrangler alias wrangler
     use module OpenWest2018.attendee alias me
-    use module io.picolabs.subscription alias subs
     shares __testing, about_me
   }
   global {
@@ -41,17 +40,23 @@ ruleset OpenWest2018.attendee.ui {
     }
 //----- generate HTML for an array of list items --------------------
     li = function(array) {
-      array.map(function(v){<<<li>#{v}<button id="contact#{array.index(v)}">Contact</button></li>
+      array.map(function(v){
+        designation = v{"designation"}.klog("designation");
+        ok_to_contact = v{"contactable"}.klog("ok_to_contact");
+        button = ok_to_contact => <<<button id="contact#{array.index(v)}">Contact</button> >>
+          | "";
+        <<<li>#{designation}#{button}</li>
 >>}).join("")
     }
 //------ generate html to raise unique events for each button
 
     contact_buttons = function(array) {
-      contact_channel = subs:established("Rx_role", "peer").map(function(c){c{"Tx"}});
+      contact_channel = me:connections().map(function(c){c{"eci"}});
       array.map(function(v){
-      contact_url = <</sky/event/#{contact_channel[array.index(v)]}/test/contact/getter>>;
-        <<var contact#{array.index(v)} = "#{pc_host + contact_url}";
-        $("#contact#{array.index(v)}").click(function(){location=contact#{array.index(v)}});>>
+      contact_url = <</sky/event/#{contact_channel[array.index(v)]}/contact_clicked/contact/getter>>;
+      <<var contact#{array.index(v)} = "#{pc_host + contact_url}";
+      $("#contact#{array.index(v)}").click(function(){location=contact#{array.index(v)}});
+      >>
       }).join("")
     }
     
@@ -87,10 +92,10 @@ ruleset OpenWest2018.attendee.ui {
 //----------- generate HTML for the about me page ------------------
 //
     about_me = function(placement) {
-      connections = me:connections();
+      connections = me:connections().klog("connections");
       progress = placement => render(placement.decode()) | "";
       possible = placement && placement.decode(){"total"}
-        => "/"+placement.decode(){"total"} | "";
+        => "/"+(placement.decode(){"total"}-1) | "";
       my_name = me:name();
       intro_url = <</sky/event/#{me:intro_channel_id()}/intro/tag/scanned>>;
       export_url = <</sky/event/#{me:intro_channel_id()}/export/export/json>>;
@@ -103,24 +108,62 @@ ruleset OpenWest2018.attendee.ui {
 <script type="text/javascript">
 $(function(){
       var url = "#{pc_host + intro_url}";
-      $("div").qrcode(url);
-      $("div").click(function(){location=url});
-      var canvas = $("div canvas").get(0);
-      var context = canvas.getContext("2d");
-      var logo = new Image();
-      logo.src = "#{pc_host}/pico-logo-48x48.png";
-      logo.onload = function(){
-        context.drawImage(logo,104,104);
-      }
+      $("#cs").qrcode(url);
+          $("#cs").click(function(){location=url});
+          var canvas = $("div canvas").get(0);
+          var context = canvas.getContext("2d");
+          var logo = new Image();
+          logo.src = "http://picos.byu.edu:8080/pico-logo-48x48.png";
+          logo.onload = function(){
+            context.drawImage(logo,104,104);
+          }
+
       var export_url = "#{pc_host + export_url}";
       $("#export").click(function(){location=export_url});
-      
-      #{contact_buttons(connections)}
-});
-</script>
+
+
+          closeMenubar();
+        });
+
+
+        function openMenubar() {
+          document.getElementById("myMenu").style.display = "block";
+        }
+
+        function closeMenubar() {
+          document.getElementById("myMenu").style.display = "none";
+        }
+    </script>
 >>;
-      <<#{header(my_name,scripts)}#{export_button}
-    <h1>#{my_name}</h1>
+
+//start of the body html
+      <<#{header(my_name,scripts)}
+      
+      <nav class="menubar block card" id="myMenu">
+        <div class="container light-blue">
+          <span onclick="closeMenubar()" class="button show-topright small">X</span>
+          <br>
+          <div class="padding center">
+            <h2>Menu</h2>
+          </div>
+        </div>
+        <p class="bar-item button" href="#">Home</p>
+        <p class="bar-item button" href="#">Contacts</p>
+        <p class="bar-item button" href="#">Settings</p>
+      </nav>
+      
+      <!-- COMBINED NAME AND PHRASE AND PUT IN CARD-->
+    <header class="bar card blue">
+      <button class="bar-item button large w3-hover-theme" onclick="openMenubar()">&#9776;</button>
+        #{export_button}
+        <h1 class="bar-item">#{my_name}</h1>
+    </header>
+    <hr>
+    <div class="row">
+      <div class="center" style="width:100%">
+        <div class="center" style="cursor:pointer;" id="cs"></div>
+    </div>
+
     <h2>#{me:tag_line()}</h2>
 <div style="border:1px dashed silver;padding:5px;float:left;cursor:pointer"></div>
 <br clear="all">
