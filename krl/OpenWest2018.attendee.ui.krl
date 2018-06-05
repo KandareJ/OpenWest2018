@@ -27,6 +27,7 @@ ruleset OpenWest2018.attendee.ui {
     <title>#{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://picos.byu.edu:8080/css/picomobile.css">
+    <link rel="stylesheet" href="https://use.typekit.net/miv2swc.css">
 #{scripts.defaultsTo("")}
   </head>
   <body>
@@ -150,7 +151,7 @@ $(function(){
         </div>
         <p class="bar-item button" href="#">Home</p>
         <p class="bar-item button" href="#">Contacts</p>
-        <p class="bar-item button" href="#">Settings</p>
+        <p class="bar-item button" href="#">My Information</p>
       </nav>
       
       <!-- COMBINED NAME AND PHRASE AND PUT IN CARD-->
@@ -159,6 +160,7 @@ $(function(){
         #{export_button}
         <h1 class="bar-item">#{my_name}</h1>
     </header>
+    <p>#{me:tag_line()}</p>
     <hr>
     <div class="row">
       <div class="center" style="width:100%">
@@ -167,7 +169,6 @@ $(function(){
       <hr>
       <div class="row">
         <h3>#{progress}</h3>
-        <p>#{me:tag_line()}</p>
         <p>Your pin is #{me:pin()}</p>
         <hr>
         <p>
@@ -187,7 +188,7 @@ $(function(){
       </div>
 
       <footer class="container bottom blue">
-        <h4>Contact. Connect. Collect!</h4>
+        <div class="center"><h4>Contact. Connect. Collect!</h4></div>
       </footer>
 
 #{footer()}>>
