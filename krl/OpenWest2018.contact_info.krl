@@ -10,29 +10,84 @@ ruleset OpenWest2018.contact_info {
                  "queries" : [{"name" : "testFunc"}]}
     
     setterUI = function() {
+      info = store:all();
       <<<html>
-        <head>
-          <title>Contact Information</title>
-        </head>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="picomobile.css">
+    <link rel="stylesheet" href="https://use.typekit.net/miv2swc.css">
 
-        <body>
-          <h1>Contact Information</h1>
-          <form action="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter">
-            First Name:<input type="text" name="first name" required>
-            <br><br>
-            Last Name:<input type="text" name="last name" required>
-            <br><br>
-            *Home phone:<input type="text" name="home">
-            <br><br>
-            *Work phone:<input type="text" name="work">
-            <br><br>
-            *Cell phone:<input type="text" name="cell">
-            <br><br>
-            *Email:<input type="text" name="email">
-            <br><br>
-            <input type="submit" value="Save Contact Information">
-          </form>
-        </body>
+    <title>My Information</title>
+    <script type="text/javascript">
+        function openMenubar() {
+          document.getElementById("myMenu").style.display = "block";
+        }
+
+        function closeMenubar() {
+          document.getElementById("myMenu").style.display = "none";
+        }
+    </script>
+
+  </head>
+  <body>
+
+<!-- No Variables -->
+      <nav class="menubar block card" id="myMenu">
+        <div class="container light-blue">
+          <span onclick="closeMenubar()" class="button show-topright small">X</span>
+          <br>
+          <div class="padding center">
+            <h2>Menu</h2>
+          </div>
+        </div>
+        <p class="bar-item button" href="#">Home</p>
+        <p class="bar-item button" href="#">Contacts</p>
+        <p class="bar-item button" href="#">Settings</p>
+      </nav>
+<!-- end no variables -->
+
+
+    <!-- COMBINED NAME AND PHRASE AND PUT IN CARD-->
+    <header class="bar card blue">
+      <button class="bar-item button large w3-hover-theme" onclick="openMenubar()">&#9776;</button>
+        <h1 class="bar-item">My Information</h1>
+    </header>
+    <hr>
+    <div class="row">
+    <form action="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter">
+      First Name:<br><input type="text" name="first name" required value=#{info{"first name"}}>
+      <br><br>
+      Last Name:<br><input type="text" name="last name" required value=#{info{"last name"}}>
+      <br><br>
+      *Home phone:<br><input type="text" name="home" value=#{info{"home"}}>
+      <br><br>
+      *Work phone:<br><input type="text" name="work" value=#{info{"work"}}>
+      <br><br>
+      *Cell phone:<br><input type="text" name="cell" value=#{info{"cell"}}>
+      <br><br>
+      *Email:<br><input type="text" name="email" value=#{info{"email"}}>
+      <br><br>
+      <input type="submit" value="Save Contact Information">
+    </form>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+<!--    No variables here -->
+  <footer class="container bottom blue">
+    <div class="center"><h4>Contact. Connect. Collect!</h4></div>
+  </footer>
+  </body>
+</html>
         >>
     }
     
