@@ -100,7 +100,6 @@ ruleset OpenWest2018.attendee.ui {
         => "/"+(placement.decode(){"total"}-1) | "";
       my_name = me:name();
       intro_url = <</sky/event/#{me:intro_channel_id()}/intro/tag/scanned>>;
-      myInformationURL = <<http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter_ui>>;
       export_url = <</sky/event/#{me:intro_channel_id()}/export/export/json>>;
       export_button = export_avail() => <<<button id="export" style="float:right">export</button>
 >> | "";
@@ -151,8 +150,8 @@ $(function(){
           </div>
         </div>
         <a class="bar-item button" href="#">Home</a>
-        <a class="bar-item button" href="#">Contacts</a>
-        <a class="bar-item button" href="#{myInformationURL}">My Information</a>
+        <a class="bar-item button" href="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/getter">Contacts</a>
+        <a class="bar-item button" href="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter_ui">My Information</a>
       </nav>
       
       <!-- COMBINED NAME AND PHRASE AND PUT IN CARD-->
