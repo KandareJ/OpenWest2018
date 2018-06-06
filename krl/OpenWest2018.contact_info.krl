@@ -10,11 +10,11 @@ ruleset OpenWest2018.contact_info {
                  "queries" : [{"name" : "testFunc"}]}
     
     setterUI = function() {
-      info = store:all();
+      info = store:read_all();
       <<<html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="picomobile.css">
+    <link rel="stylesheet" href="http://picos.byu.edu:8080/css/picomobile.css">
     <link rel="stylesheet" href="https://use.typekit.net/miv2swc.css">
 
     <title>My Information</title>
@@ -55,17 +55,17 @@ ruleset OpenWest2018.contact_info {
     <hr>
     <div class="row">
     <form action="http://picos.byu.edu:8080/sky/event/#{meta:eci}/contactTest/contact/setter">
-      First Name:<br><input type="text" name="first name" required value=#{info{"first name"}}>
+      First Name:<br><input type="text" name="first name" required value=#{info{"first name"}.defaultsTo("")}>
       <br><br>
-      Last Name:<br><input type="text" name="last name" required value=#{info{"last name"}}>
+      Last Name:<br><input type="text" name="last name" required value=#{info{"last name"}.defaultsTo("")}>
       <br><br>
-      *Home phone:<br><input type="text" name="home" value=#{info{"home"}}>
+      *Home phone:<br><input type="text" name="home" value=#{info{"home"}.defaultsTo("")}>
       <br><br>
-      *Work phone:<br><input type="text" name="work" value=#{info{"work"}}>
+      *Work phone:<br><input type="text" name="work" value=#{info{"work"}.defaultsTo("")}>
       <br><br>
-      *Cell phone:<br><input type="text" name="cell" value=#{info{"cell"}}>
+      *Cell phone:<br><input type="text" name="cell" value=#{info{"cell"}.defaultsTo("")}>
       <br><br>
-      *Email:<br><input type="text" name="email" value=#{info{"email"}}>
+      *Email:<br><input type="text" name="email" value=#{info{"email"}.defaultsTo("")}>
       <br><br>
       <input type="submit" value="Save Contact Information">
     </form>
