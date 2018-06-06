@@ -10,6 +10,8 @@ ruleset OpenWest2018.contact_info {
                  "queries" : [{"name" : "testFunc"}]}
     
     setterUI = function() {
+      pc_host = "http://picos.byu.edu:8080";
+      pin = Attendee:pin();
       info = store:read_all();
       <<<html>
   <head>
@@ -19,6 +21,9 @@ ruleset OpenWest2018.contact_info {
 
     <title>My Information</title>
     <script type="text/javascript">
+    
+    
+    
         function openMenubar() {
           document.getElementById("myMenu").style.display = "block";
         }
@@ -40,16 +45,16 @@ ruleset OpenWest2018.contact_info {
             <h2>Menu</h2>
           </div>
         </div>
-        <p class="bar-item button" href="#">Home</p>
-        <p class="bar-item button" href="#">Contacts</p>
-        <p class="bar-item button" href="#">Settings</p>
+        <a class="bar-item button" href="#{pc_host}/OpenWest2018.collection/about_pin.html?pin=#{pin}">Home</a>
+        <a class="bar-item button" href="#">Contacts</a>
+        <a class="bar-item button" href="#">My Information</a>
       </nav>
 <!-- end no variables -->
 
 
     <!-- COMBINED NAME AND PHRASE AND PUT IN CARD-->
     <header class="bar card blue">
-      <button class="bar-item button large w3-hover-theme" onclick="openMenubar()">&#9776;</button>
+      <button class="bar-item button large blue-theme" onclick="openMenubar()">&#9776;</button>
         <h1 class="bar-item">My Information</h1>
     </header>
     <hr>
@@ -97,6 +102,20 @@ ruleset OpenWest2018.contact_info {
       (map.values()[0].isnull()) => "No contact information available" | map.values().join("");
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     getterUI = function(map) {
       <<<html>
           <head>
@@ -135,8 +154,10 @@ ruleset OpenWest2018.contact_info {
   
   rule set_info_ui {
     select when contact setter_ui
+    pre {html = setterUI()}
+    send_directive("_html", {"content" : html})
     
-    send_directive("_html", {"content" : setterUI() })
   }
+  
 
 }
