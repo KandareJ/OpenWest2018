@@ -2,7 +2,7 @@ body {
     margin: 0
 }
 
-p {
+p, a {
   color: black;
   font-weight: 200;
   font-size: 1.5em;
@@ -50,6 +50,14 @@ h4 {
   font-size: 1.3em;
 }
 
+h5 {
+  color: black;
+  font-weight: 200;
+  font-size: 1em;
+  font-family: sans-serif;
+  padding: 10;
+}
+
 hr {
     border: 0;
     border-top: 1px solid #eee;
@@ -83,6 +91,7 @@ input[type=submit] {
  padding: 14px 20px;
  margin: 8px 0;
  border: none;
+ font-size: .7em;
  border-radius: 4px;
  cursor: pointer;
 }
@@ -215,7 +224,30 @@ input[type=submit] {
   background-color:#2196f3;
 }
 
-.w3-hover-theme:hover {
+.blue-theme:hover {
   color:#fff;
   background-color:#2196f3;
+}
+
+.accordion {
+    background-color: #fff;
+    color: #444;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.5em;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
 }
