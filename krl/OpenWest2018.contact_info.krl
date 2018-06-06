@@ -3,7 +3,7 @@ ruleset OpenWest2018.contact_info {
     use module io.picolabs.pds alias store
     use module OpenWest2018.attendee alias Attendee
     use module io.picolabs.wrangler alias Wrangler
-    shares __testing, accordion
+    shares __testing, returnInfo
   }
   
   global {
@@ -27,7 +27,7 @@ ruleset OpenWest2018.contact_info {
     <title>My Information</title>
     <script type="text/javascript">
     
-    
+    $(function(){closeMenubar();});
     
         function openMenubar() {
           document.getElementById("myMenu").style.display = "block";
@@ -39,7 +39,7 @@ ruleset OpenWest2018.contact_info {
     </script>
 
   </head>
-  <body>
+  <body onload="closeMenubar()">
 
 <!-- No Variables -->
       <nav class="menubar block card" id="myMenu">
@@ -111,10 +111,12 @@ ruleset OpenWest2018.contact_info {
       contacts = Attendee:connections();
       
       contacts.map(function(x){
-      ri = returnInfo();
+      ri = Wrangler:skyQuery(x{"eci"}, "OpenWest2018.contact_info", "returnInfo").klog("ri");
+      line = <<<div class="panel"><h5>Name: #{ri.filter(function(v2, k2){k2 == "first name" || k2 == "last name"}).values().join(" ")}<br>#{ri.filter(function(v1, k1){k1 != "first name" && k1 != "last name"}).map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div><hr> >>;
+      generatePanel = ri{"error"} => <<<div class="panel"><h5>Contact information unavailable</h5></div><hr> >> | (ri{"first name"} => line | <<<div class="panel"><h5>No information available</h5></div><hr> >>);
       <<
       <button class="accordion">#{x{"designation"}}</button>
-        <div class="panel"><h5>Name: #{ri.filter(function(v2, k2){k2 == "first name" || k2 == "last name"}).values().join(" ")}<br>#{ri.filter(function(v1, k1){k1 != "first name" && k1 != "last name"}).map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div><hr>
+        #{generatePanel}
       >>}).join("")
     }
     
@@ -129,6 +131,7 @@ ruleset OpenWest2018.contact_info {
 
     <title>Contacts</title>
     <script type="text/javascript">
+    
         function openMenubar() {
           document.getElementById("myMenu").style.display = "block";
         }
@@ -139,7 +142,7 @@ ruleset OpenWest2018.contact_info {
     </script>
 
   </head>
-  <body>
+  <body onload="closeMenubar()">
 
 <!-- No Variables -->
       <nav class="menubar block card" id="myMenu">
@@ -220,19 +223,18 @@ ruleset OpenWest2018.contact_info {
     select when contact setter
     
     foreach event:attrs setting (v, k)
-    if not v.length() < 1 && k != "_headers" then noop();
+    
+    if not v.length() < 1 && k != "_headers" then send_directive("_html", {"content" : getterUI(store:read_all())})//noop();
       fired {
         raise store event "new_value" 
         attributes {"key" : k, "value" : v};
       }
-    
   }
   
   rule set_info_ui {
     select when contact setter_ui
     pre {html = setterUI()}
     send_directive("_html", {"content" : html})
-    
   }
   
 
