@@ -2,12 +2,16 @@ ruleset OpenWest2018.contact_info {
   meta {
     use module io.picolabs.pds alias store
     use module OpenWest2018.attendee alias Attendee
-    shares __testing
+    shares __testing, accordion
   }
   
   global {
     __testing = {"events" : [{"domain" : "contact", "type" : "getter"}],
-                 "queries" : [{"name" : "testFunc"}]}
+                 "queries" : [{"name" : "accordion"}]}
+    
+    returnInfo = function() {
+      store:read_all()
+    }
     
     setterUI = function() {
       pc_host = "http://picos.byu.edu:8080";
@@ -102,6 +106,16 @@ ruleset OpenWest2018.contact_info {
       (map.values()[0].isnull()) => "No contact information available" | map.values().join("");
     }
     
+    accordion = function(info) {
+      contacts = Attendee:connections();
+      
+      
+      contacts.map(function(x){<<
+      <button class="accordion">#{x{"designation"}}</button>
+        <div class="panel"><h5>#{returnInfo().map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div>
+      >>}).join("")
+    }
+    
     getterUI = function(map) {
       pc_host = "http://picos.byu.edu:8080";
       pin = Attendee:pin();
@@ -146,10 +160,10 @@ ruleset OpenWest2018.contact_info {
       <button class="bar-item button large blue-theme" onclick="openMenubar()">&#9776;</button>
         <h1 class="bar-item">Contacts</h1>
     </header>
-    <hr>
+    
 
 
-
+    #{accordion(info)}
 
 
     <br>
@@ -167,6 +181,24 @@ ruleset OpenWest2018.contact_info {
   <footer class="container bottom blue">
     <div class="center"><h4>Contact. Connect. Collect!</h4></div>
   </footer>
+  
+  <script>
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+      panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+  </script>
+  
   </body>
 </html>
         >>
@@ -180,6 +212,7 @@ ruleset OpenWest2018.contact_info {
     }
     send_directive("_html", {"content" : getterUI(info)})
   }
+  
   
   rule set_info {
     select when contact setter
