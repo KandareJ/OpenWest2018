@@ -47,7 +47,7 @@ ruleset OpenWest2018.attendee.ui {
         ok_to_contact = v{"contactable"}.klog("ok_to_contact");
         button = ok_to_contact => <<<button id="contact#{array.index(v)}">Contact</button> >>
           | "";
-        <<<li>#{designation}#{button}</li>
+        <<<li>#{designation}</li>
 >>}).join("")
     }
 //------ generate html to raise unique events for each button
