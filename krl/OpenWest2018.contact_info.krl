@@ -2,6 +2,7 @@ ruleset OpenWest2018.contact_info {
   meta {
     use module io.picolabs.pds alias store
     use module OpenWest2018.attendee alias Attendee
+    use module io.picolabs.wrangler alias Wrangler
     shares __testing, accordion
   }
   
@@ -109,10 +110,11 @@ ruleset OpenWest2018.contact_info {
     accordion = function(info) {
       contacts = Attendee:connections();
       
-      
-      contacts.map(function(x){<<
+      contacts.map(function(x){
+      ri = returnInfo();
+      <<
       <button class="accordion">#{x{"designation"}}</button>
-        <div class="panel"><h5>#{returnInfo().map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div>
+        <div class="panel"><h5>Name: #{ri.filter(function(v2, k2){k2 == "first name" || k2 == "last name"}).values().join(" ")}<br>#{ri.filter(function(v1, k1){k1 != "first name" && k1 != "last name"}).map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div><hr>
       >>}).join("")
     }
     
