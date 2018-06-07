@@ -38,7 +38,7 @@ ruleset OpenWest2018.ui {
       <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="picomobile.css">
+    <link rel="stylesheet" href="http://picos.byu.edu:8080/css/picomobile.css">
     <link rel="stylesheet" href="https://use.typekit.net/miv2swc.css">
     <title>My Information</title>
   </head>
