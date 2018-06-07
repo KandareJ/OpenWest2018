@@ -235,10 +235,28 @@ You are already connected to #{event:attr("designation")}
   }
   rule notify_connection {
     select when attendee connected
-    send_directive("_html",{"content":<<#{header("Connected")}<p>
-You are now connected to #{event:attr("designation")}
-</p>
-#{my_page_link(event:attr("scanner_pin"))}
-#{footer()}>>});
+    pre {pin = event:attr("scanner_pin");}
+    send_directive("_html",{"content":<<
+    
+    <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://picos.byu.edu:8080/css/picomobile.css">
+    <link rel="stylesheet" href="https://use.typekit.net/miv2swc.css">
+    <title>My Information</title>
+  </head>
+  <body>
+    <header class="bar card blue">
+        <h1 class="bar-item">Pico Created</h1>
+    </header>
+    <form action="#{pc_host}/OpenWest2018.collection/about_pin.html?pin=#{pin};>
+      <input type="submit" value="My Page">
+    </form>
+    <footer class="container bottom blue">
+      <div class="center"><h4>Contact. Connect. Collect!</h4></div>
+    </footer>
+  </body>
+</html>
+    >>});
   }
 }
