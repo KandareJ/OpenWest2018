@@ -112,7 +112,7 @@ ruleset OpenWest2018.contact_info {
       
       contacts.map(function(x){
       ri = Wrangler:skyQuery(x{"eci"}, "OpenWest2018.contact_info", "returnInfo").klog("ri");
-      line = <<<div class="panel"><h5>Name: #{ri.filter(function(v2, k2){k2 == "first name" || k2 == "last name"}).values().join(" ")}<br>#{ri.filter(function(v1, k1){k1 != "first name" && k1 != "last name"}).map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div><hr> >>;
+      line = <<<div class="panel"><h5>Name: #{ri.filter(function(v2, k2){k2 == "first name" || k2 == "last name"}).values().join(" ")}<br>#{ri.filter(function(v1, k1){k1 != "first name" && k1 != "last name" && v1 != ""}).map(function(v, k){<<#{k}: #{v}<br> >>}).values().join("")}</h5></div><hr> >>;
       generatePanel = ri{"error"} => <<<div class="panel"><h5>Contact information unavailable</h5></div><hr> >> | (ri{"first name"} => line | <<<div class="panel"><h5>No information available</h5></div><hr> >>);
       <<
       <button class="accordion">#{x{"designation"}}</button>
@@ -224,7 +224,7 @@ ruleset OpenWest2018.contact_info {
     
     foreach event:attrs setting (v, k)
     
-    if not v.length() < 1 && k != "_headers" then send_directive("_html", {"content" : getterUI(store:read_all())})//noop();
+    if not k != "_headers" then send_directive("_html", {"content" : getterUI(store:read_all())})//noop();
       fired {
         raise store event "new_value" 
         attributes {"key" : k, "value" : v};
